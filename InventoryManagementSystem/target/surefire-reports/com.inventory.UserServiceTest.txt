@@ -1,0 +1,18 @@
+-------------------------------------------------------------------------------
+Test set: com.inventory.UserServiceTest
+-------------------------------------------------------------------------------
+Tests run: 9, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.089 s <<< FAILURE! -- in com.inventory.UserServiceTest
+com.inventory.UserServiceTest.testAddUser -- Time elapsed: 0.011 s <<< ERROR!
+java.lang.RuntimeException: Error adding user: not implemented by SQLite JDBC driver
+	at com.inventory.dao.UserDAOImpl.addUser(UserDAOImpl.java:30)
+	at com.inventory.service.UserService.addUser(UserService.java:64)
+	at com.inventory.UserServiceTest.testAddUser(UserServiceTest.java:63)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+Caused by: java.sql.SQLFeatureNotSupportedException: not implemented by SQLite JDBC driver
+	at org.sqlite.jdbc3.JDBC3PreparedStatement.unsupported(JDBC3PreparedStatement.java:448)
+	at org.sqlite.jdbc3.JDBC3Statement.getGeneratedKeys(JDBC3Statement.java:357)
+	at com.inventory.dao.UserDAOImpl.addUser(UserDAOImpl.java:27)
+	... 5 more
+

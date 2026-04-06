@@ -1,0 +1,5 @@
+com\inventory\ValidationUtilTest.class
+com\inventory\SupplierServiceTest.class
+com\inventory\UserServiceTest.class
+com\inventory\ProductServiceTest.class
+com\inventory\PasswordUtilTest.class

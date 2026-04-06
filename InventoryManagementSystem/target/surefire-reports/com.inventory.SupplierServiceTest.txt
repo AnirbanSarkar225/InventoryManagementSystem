@@ -1,0 +1,51 @@
+-------------------------------------------------------------------------------
+Test set: com.inventory.SupplierServiceTest
+-------------------------------------------------------------------------------
+Tests run: 7, Failures: 0, Errors: 4, Skipped: 0, Time elapsed: 0.087 s <<< FAILURE! -- in com.inventory.SupplierServiceTest
+com.inventory.SupplierServiceTest.testAddSupplier -- Time elapsed: 0.011 s <<< ERROR!
+java.lang.RuntimeException: Error adding supplier: not implemented by SQLite JDBC driver
+	at com.inventory.dao.SupplierDAOImpl.addSupplier(SupplierDAOImpl.java:30)
+	at com.inventory.service.SupplierService.addSupplier(SupplierService.java:28)
+	at com.inventory.SupplierServiceTest.testAddSupplier(SupplierServiceTest.java:34)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+Caused by: java.sql.SQLFeatureNotSupportedException: not implemented by SQLite JDBC driver
+	at org.sqlite.jdbc3.JDBC3PreparedStatement.unsupported(JDBC3PreparedStatement.java:448)
+	at org.sqlite.jdbc3.JDBC3Statement.getGeneratedKeys(JDBC3Statement.java:357)
+	at com.inventory.dao.SupplierDAOImpl.addSupplier(SupplierDAOImpl.java:27)
+	... 5 more
+
+com.inventory.SupplierServiceTest.testGetSupplierById -- Time elapsed: 0.002 s <<< ERROR!
+com.inventory.exception.InventoryException: Supplier with ID 0 not found.
+	at com.inventory.service.SupplierService.lambda$getSupplierOrThrow$0(SupplierService.java:56)
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
+	at com.inventory.service.SupplierService.getSupplierOrThrow(SupplierService.java:56)
+	at com.inventory.service.SupplierService.getSupplierById(SupplierService.java:43)
+	at com.inventory.SupplierServiceTest.testGetSupplierById(SupplierServiceTest.java:49)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+
+com.inventory.SupplierServiceTest.testUpdateSupplier -- Time elapsed: 0.002 s <<< ERROR!
+com.inventory.exception.InventoryException: Supplier with ID 0 not found.
+	at com.inventory.service.SupplierService.lambda$getSupplierOrThrow$0(SupplierService.java:56)
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
+	at com.inventory.service.SupplierService.getSupplierOrThrow(SupplierService.java:56)
+	at com.inventory.service.SupplierService.getSupplierById(SupplierService.java:43)
+	at com.inventory.SupplierServiceTest.testUpdateSupplier(SupplierServiceTest.java:57)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+
+com.inventory.SupplierServiceTest.testDeleteSupplier -- Time elapsed: 0.002 s <<< ERROR!
+com.inventory.exception.InventoryException: Supplier with ID 0 not found.
+	at com.inventory.service.SupplierService.lambda$getSupplierOrThrow$0(SupplierService.java:56)
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
+	at com.inventory.service.SupplierService.getSupplierOrThrow(SupplierService.java:56)
+	at com.inventory.service.SupplierService.deleteSupplier(SupplierService.java:38)
+	at com.inventory.SupplierServiceTest.testDeleteSupplier(SupplierServiceTest.java:82)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+
