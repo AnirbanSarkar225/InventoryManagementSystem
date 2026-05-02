@@ -26,7 +26,7 @@ public class ValidationUtil {
 
     public static boolean isValidEmail(String email) {
         if (isNullOrEmpty(email)) return false;
-        return email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$");
+        return email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
     }
 
     public static boolean isValidPhone(String phone) {

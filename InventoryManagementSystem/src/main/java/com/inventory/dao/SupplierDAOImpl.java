@@ -1,12 +1,17 @@
 package com.inventory.dao;
 
-import com.inventory.model.Supplier;
-import com.inventory.util.DatabaseConnection;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import com.inventory.model.Supplier;
+import com.inventory.util.DatabaseConnection;
 
 public class SupplierDAOImpl implements SupplierDAO {
 
@@ -24,8 +29,20 @@ public class SupplierDAOImpl implements SupplierDAO {
             ps.setString(4, supplier.getEmail());
             ps.setString(5, supplier.getAddress());
             ps.executeUpdate();
-            ResultSet keys = ps.getGeneratedKeys();
-            if (keys.next()) supplier.setId(keys.getInt(1));
+            try {
+                ResultSet keys = ps.getGeneratedKeys();
+                if (keys != null && keys.next()) {
+                    supplier.setId(keys.getInt(1));
+                } else {
+                    try (ResultSet rs = getConn().createStatement().executeQuery("SELECT last_insert_rowid()")) {
+                        if (rs.next()) supplier.setId(rs.getInt(1));
+                    }
+                }
+            } catch (SQLFeatureNotSupportedException ex) {
+                try (ResultSet rs = getConn().createStatement().executeQuery("SELECT last_insert_rowid()")) {
+                    if (rs.next()) supplier.setId(rs.getInt(1));
+                }
+            }
         } catch (SQLException e) {
             throw new RuntimeException("Error adding supplier: " + e.getMessage(), e);
         }

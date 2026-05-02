@@ -7,14 +7,15 @@ import java.sql.Statement;
 
 public class DatabaseConnection {
 
-    private static final String DB_URL = "jdbc:sqlite:inventory.db";
+    private static final String DEFAULT_DB_URL = "jdbc:sqlite:inventory.db";
     private static DatabaseConnection instance;
     private Connection connection;
 
     private DatabaseConnection() {
         try {
             Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection(DB_URL);
+            String dbUrl = System.getProperty("db.url", DEFAULT_DB_URL);
+            connection = DriverManager.getConnection(dbUrl);
             connection.setAutoCommit(true);
         } catch (ClassNotFoundException | SQLException e) {
             throw new RuntimeException("Failed to initialize database connection: " + e.getMessage(), e);

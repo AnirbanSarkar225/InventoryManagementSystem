@@ -1,12 +1,17 @@
 package com.inventory.dao;
 
-import com.inventory.model.Category;
-import com.inventory.util.DatabaseConnection;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import com.inventory.model.Category;
+import com.inventory.util.DatabaseConnection;
 
 public class CategoryDAOImpl implements CategoryDAO {
 
@@ -21,8 +26,20 @@ public class CategoryDAOImpl implements CategoryDAO {
             ps.setString(1, category.getName());
             ps.setString(2, category.getDescription());
             ps.executeUpdate();
-            ResultSet keys = ps.getGeneratedKeys();
-            if (keys.next()) category.setId(keys.getInt(1));
+            try {
+                ResultSet keys = ps.getGeneratedKeys();
+                if (keys != null && keys.next()) {
+                    category.setId(keys.getInt(1));
+                } else {
+                    try (ResultSet rs = getConn().createStatement().executeQuery("SELECT last_insert_rowid()")) {
+                        if (rs.next()) category.setId(rs.getInt(1));
+                    }
+                }
+            } catch (SQLFeatureNotSupportedException ex) {
+                try (ResultSet rs = getConn().createStatement().executeQuery("SELECT last_insert_rowid()")) {
+                    if (rs.next()) category.setId(rs.getInt(1));
+                }
+            }
         } catch (SQLException e) {
             throw new RuntimeException("Error adding category: " + e.getMessage(), e);
         }

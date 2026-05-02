@@ -1,12 +1,17 @@
 package com.inventory.dao;
 
-import com.inventory.model.User;
-import com.inventory.util.DatabaseConnection;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import com.inventory.model.User;
+import com.inventory.util.DatabaseConnection;
 
 public class UserDAOImpl implements UserDAO {
 
@@ -24,8 +29,20 @@ public class UserDAOImpl implements UserDAO {
             ps.setString(4, user.getRole().name());
             ps.setInt(5, user.isActive() ? 1 : 0);
             ps.executeUpdate();
-            ResultSet keys = ps.getGeneratedKeys();
-            if (keys.next()) user.setId(keys.getInt(1));
+            try {
+                ResultSet keys = ps.getGeneratedKeys();
+                if (keys != null && keys.next()) {
+                    user.setId(keys.getInt(1));
+                } else {
+                    try (ResultSet rs = getConn().createStatement().executeQuery("SELECT last_insert_rowid()")) {
+                        if (rs.next()) user.setId(rs.getInt(1));
+                    }
+                }
+            } catch (SQLFeatureNotSupportedException ex) {
+                try (ResultSet rs = getConn().createStatement().executeQuery("SELECT last_insert_rowid()")) {
+                    if (rs.next()) user.setId(rs.getInt(1));
+                }
+            }
         } catch (SQLException e) {
             throw new RuntimeException("Error adding user: " + e.getMessage(), e);
         }
